@@ -195,7 +195,15 @@ namespace WEBAPI.Controllers // Reemplaza con el nombre correcto del espacio de 
                     return NotFound("Reservation not found.");
                 }
 
+                var userReservation = _dbContext.UserReservations
+                    .FirstOrDefault(ur => ur.ReservationID == id);
                 _dbContext.Reservations.Remove(reservation);
+                if (userReservation == null)
+                {
+                    return NotFound("Reservation not found.");
+                }
+                _dbContext.UserReservations.Remove(userReservation);
+
                 _dbContext.SaveChanges();
                 return Ok(new { message = "Reservation deleted successfully." });
             }
@@ -380,5 +388,21 @@ namespace WEBAPI.Controllers // Reemplaza con el nombre correcto del espacio de 
             return Ok(reservations);
         }
 
+        [HttpGet]
+        [Route("reservationsById")]
+        public IActionResult GetReservationsById(int? reservationId)
+        {
+            // Consultar las reservas asociadas al usuario
+            var reservations = _dbContext.Reservations
+                .Where(ur => ur.ReservationId == reservationId)
+                .ToList();
+
+            if (reservations == null || !reservations.Any())
+            {
+                return NotFound("No reservations found .");
+            }
+
+            return Ok(reservations[0]);
+        }
     }
 }
