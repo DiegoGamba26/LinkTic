@@ -33,3 +33,4 @@ Para ejecutar pruebas unitarias:
 
 1. Abre el **Test Explorer** desde **Test > Test Explorer** en el menú superior.
 2. Haz clic en **Run All** para ejecutar todas las pruebas.
+Se deben registrar servicios y customers para que funcionen los demás.
